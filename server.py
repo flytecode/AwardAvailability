@@ -61,21 +61,20 @@ def update_database():
     print(Hotel.query_all())
     return
 
-#  may be able to remove unique and nullable parameters
+
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
-# TODO may want to write make each class json serializable
-
+# may consider adding this table
 # class Brand(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     name = db.Column(db.String(40), unique=True, nullable=False)
 #     def __repr__(self):
 #         return '<User %r>' % self.username
 
-
+#  may be able to remove unique and nullable parameters for all db Model classes
 class Hotel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     brand = db.Column(db.String(40), unique=False, nullable=False)
@@ -118,8 +117,8 @@ class Availability(db.Model):
         return {'id': self.id, 'start_date': self.start_date, 'end_date': self.end_date}
 ############
 
-# TODO remove GET
-# TODO think about url structure
+# remove GET request ability
+# need to think about url structure
 
 
 @app.route('/hello/', methods=['GET', 'POST'])
@@ -130,7 +129,6 @@ def welcome():
 @app.route('/brands/', methods=['GET', 'POST'])
 def get_brands():
     brands = []
-    # TODO check this query: https://stackoverflow.com/questions/2175355/selecting-distinct-column-values-in-sqlalchemy-elixir
     for hotel in db.session.query(Hotel.brand).distinct():
         brands.append(hotel.brand)
     return jsonify(brands)
@@ -138,7 +136,6 @@ def get_brands():
 
 @app.route('/brands/<brand>/', methods=['GET', 'POST'])
 def get_hotels(brand):
-    # run sql query on brand id to get all hotels under that brand
     brand = brand.lower()
     hotels = []
     for hotel in Hotel.query.filter_by(brand="Hyatt"):
