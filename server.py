@@ -62,8 +62,6 @@ def update_database():
     return
 
 
-
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
@@ -75,6 +73,8 @@ db = SQLAlchemy(app)
 #         return '<User %r>' % self.username
 
 #  may be able to remove unique and nullable parameters for all db Model classes
+
+
 class Hotel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     brand = db.Column(db.String(40), unique=False, nullable=False)
@@ -110,6 +110,7 @@ class Availability(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
 
     def __repr__(self):
+        # currently self.start_date and self.end_date include the times. make it only year month and day
         return f'<Availability {self.id}: {self.start_date} {self.end_date}> in {self.room_id}'
 
     @property
