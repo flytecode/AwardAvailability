@@ -95,12 +95,15 @@ def hyatt_scrape_v2(hotel_key, start_date, end_date):
                 print("Booking Available for " + str(start) + " to " + str(start + datetime.timedelta(days=1)))
                 time.sleep(3)
                 room_types2 = driver.find_elements_by_xpath("//div[contains(@data-js, 'rate-list-container')]")
+                res = {}
                 for room_type2 in room_types2:
                     time.sleep(1)
                     rooms = room_type2.find_elements_by_xpath(".//div[contains(@class, 'rate-information-container')]")
+                    res[room_type2] = rooms
                     for room in rooms:
                         print("Room Type: " + room.find_element_by_xpath(".//div[contains(@data-js, 'room-title')]").get_attribute("innerText"))
                         print("Room Rate: " + room.find_element_by_xpath(".//div[contains(@class, 'rate b-text_weight-bold b-text_display-2')]").get_attribute("innerText"))
+                return res
     t1 = time.time()
     print("Time Elapsed: " + str(t1 - t0))
 
@@ -141,4 +144,5 @@ def hyatt_scrape_v2(hotel_key, start_date, end_date):
 # query = urllib.parse.quote('M/Y Kontiki Wayra', safe='')
 # print(query)
 
-# hyatt_scrape_v2("Hyatt Place Birmingham/Hoover", datetime.date(2021, 9, 1), datetime.date(2021, 9, 5))
+hyatt_scrape_v2("Hyatt Place Birmingham/Hoover", datetime.date(2021, 9, 1), datetime.date(2021, 9, 5))
+
