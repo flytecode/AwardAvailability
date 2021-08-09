@@ -145,8 +145,7 @@ def get_hotels(brand):
 
 
 @app.route('/brands/<brand>/<hotel_id>/', methods=['GET', 'POST'])
-def get_availability(hotel):
-    # run sql query to get availability of hotel in specified date range
+def get_availability(brand, hotel_id):
     start_date = request.args.get("start_date")
     end_date = request.args.get("end_date")
     # TODO check if start_date and end_date are valid
@@ -160,7 +159,16 @@ def get_availability(hotel):
     if not end_date:
         # TODO probably search 30 days after start_date
         end_date = "08-30-2021"
-    availability = {""}
+
+    # TODO add filtering by start_date and end_date
+    availability = []
+    for room in Room.query.filter_by(hotel_id=hotel_id):
+        room_availability = {'room': room.serialize, 'availability': []}
+        for free in Availability.query.filter_by(room_id=room.id):
+            room_availability['availability'].append(free.serialize)
+        availability.append(room_availability)
+
+    return jsonify(availability)
 
 
 if __name__ == '__main__':
