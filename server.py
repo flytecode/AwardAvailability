@@ -9,7 +9,9 @@ app = Flask(__name__)
 # TODO schedule update_database to run every ~15 minutes (maybe even continuously)
 
 
-def update_database_test():
+def create_database_test():
+    # sqlalchemy + flask quickstart guide: https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
+    db.create_all()
     hotel1 = Hotel(brand='Hyatt', name='Hyatt Rosemont')
     hotel2 = Hotel(brand='Hyatt', name='Hyatt Regency Indianapolis')
     db.session.add(hotel1)
