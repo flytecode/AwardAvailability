@@ -141,4 +141,4 @@ def hyatt_scrape_v2(hotel_key, start_date, end_date):
 # query = urllib.parse.quote('M/Y Kontiki Wayra', safe='')
 # print(query)
 
-hyatt_scrape_v2("Hyatt Place Birmingham/Hoover", datetime.date(2021, 9, 1), datetime.date(2021, 9, 5))
+# hyatt_scrape_v2("Hyatt Place Birmingham/Hoover", datetime.date(2021, 9, 1), datetime.date(2021, 9, 5))
