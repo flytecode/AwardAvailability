@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify, request
+from flask_cors import cross_origin
 
 app = Flask(__name__)
 
@@ -123,11 +124,13 @@ class Availability(db.Model):
 
 
 @app.route('/hello/', methods=['GET', 'POST'])
+@cross_origin()
 def welcome():
     return "Hello World!"
 
 
 @app.route('/brands/', methods=['GET', 'POST'])
+@cross_origin()
 def get_brands():
     brands = []
     for hotel in db.session.query(Hotel.brand).distinct():
@@ -136,6 +139,7 @@ def get_brands():
 
 
 @app.route('/brands/<brand>/', methods=['GET', 'POST'])
+@cross_origin()
 def get_hotels(brand):
     brand = brand.lower()
     hotels = []
@@ -145,9 +149,10 @@ def get_hotels(brand):
 
 
 @app.route('/brands/<brand>/<hotel_id>/', methods=['GET', 'POST'])
+@cross_origin()
 def get_availability(brand, hotel_id):
-    start_date = request.args.get("start_date")
-    end_date = request.args.get("end_date")
+    start_date = request.args.get("startDate")
+    end_date = request.args.get("endDate")
     # TODO check if start_date and end_date are valid
     if not start_date and not end_date:
         # TODO probably just search 30 days ahead
@@ -172,4 +177,4 @@ def get_availability(brand, hotel_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=105)
+    app.run(debug=True)
